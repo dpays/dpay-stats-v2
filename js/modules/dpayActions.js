@@ -19,7 +19,7 @@ export function updateDisplayedAccounts(op, value) {
   }
 }
 
-const defaultUserNames = ['utopian-io', 'busy.org', 'blocktrades', 'sambillingham', 'kevinwong'];
+const defaultUserNames = ['jared', 'onceuponatime', 'stan', 'michaelx', 'mbex'];
 
 export function checkForUsersAndSearch(){
   let list = util.getValueListFromParams()
