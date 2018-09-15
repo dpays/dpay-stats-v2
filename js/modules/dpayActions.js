@@ -6,7 +6,7 @@ let vestingShares,
     delegatedVestingShares,
     receivedVestingShares,
     totalVestingShares,
-    totalVestingFundSteem = null;
+    totalVestingFundDPay = null;
 
 export let displayedAccounts = [];
 // let $grid;
@@ -52,16 +52,16 @@ export function displayAccounts(newAccounts, sortValue ){
       `<div class="grid-item col-xl-15 col-lg-3 col-md-4 col-6 name-${(user.name).replace(/\./g, '-')}"
         data-name="@${user.name}"
         data-reputation="${user.rep}"
-        data-steempower="${ user.effectiveSp }"
+        data-dpaypower="${ user.effectiveSp }"
         data-value="${user.usdValue}"
         data-postcount="${user.numOfPosts}"
         data-followers="${user.followerCount}"
         data-accountage="${user.accountAgeMilliseconds}" >
 
-      <a href="https://steemit.com/@${user.name}" class="user-link"><img src="${user.image}" onerror="this.src='img/default-user.jpg'" class="rounded-circle" height="80px" width="80px"></a>
-      <li><a href="https://steemit.com/@${user.name}" class="user-value user-name user-link">${user.name}</a> <span class="badge badge-secondary">${user.rep}</span></li>
-      <li>EFFECTIVE SP: <span class="user-value">${ (user.effectiveSp).toLocaleString() }</span></li>
-      <li>STEEMPOWER: <span class="user-value">${user.sp} <br><span class="steam-calc">(+ ${user.delegatedSpIn} - ${user.delegatedSpOut})</span></span></li>
+      <a href="https://dsite.io/@${user.name}" class="user-link"><img src="${user.image}" onerror="this.src='img/default-user.jpg'" class="rounded-circle" height="80px" width="80px"></a>
+      <li><a href="https://dsite.io/@${user.name}" class="user-value user-name user-link">${user.name}</a> <span class="badge badge-secondary">${user.rep}</span></li>
+      <li>EFFECTIVE BP: <span class="user-value">${ (user.effectiveSp).toLocaleString() }</span></li>
+      <li>BEXPOWER: <span class="user-value">${user.sp} <br><span class="steam-calc">(+ ${user.delegatedSpIn} - ${user.delegatedSpOut})</span></span></li>
 
       <li>
         <div class="progress">
@@ -70,8 +70,8 @@ export function displayAccounts(newAccounts, sortValue ){
           </div>
       </li>
 
-      <li>STEEM BALANCE: <span class="user-value">${parseInt(user.steem)}</span></li>
-      <li>SBD Balance: <span class="user-value">${parseInt(user.sbd)}</span></li>
+      <li>BEX BALANCE: <span class="user-value">${parseInt(user.dpay)}</span></li>
+      <li>BBD Balance: <span class="user-value">${parseInt(user.bbd)}</span></li>
       <li>POSTS: <span class="user-value">${user.numOfPosts}</span></li>
 
       <li>Followers: <span class="user-value">${user.followerCount}</span></li>
@@ -111,10 +111,10 @@ export function displayAccounts(newAccounts, sortValue ){
 
 export function getGlobalProps(server){
   return new Promise((resolve, reject) => {
-    steem.api.setOptions({ url: server });
-    steem.api.getDynamicGlobalProperties((err, result) => {
+    dpay.api.setOptions({ url: server });
+    dpay.api.getDynamicGlobalProperties((err, result) => {
       totalVestingShares = result.total_vesting_shares;
-      totalVestingFundSteem = result.total_vesting_fund_steem;
+      totalVestingFundDPay = result.total_vesting_fund_dpay;
       resolve()
     })
   })
@@ -122,7 +122,7 @@ export function getGlobalProps(server){
 
 
 export function getAccounts(accountNames){
-    return steem.api.getAccountsAsync(accountNames)
+    return dpay.api.getAccountsAsync(accountNames)
 };
 
 export function proccessData(accounts){
@@ -133,13 +133,13 @@ export function proccessData(accounts){
     let USER_COMPARE = $('body').hasClass('user-compare')
   accounts.forEach( user => {
 
-    // steem power calc
+    // dPay power calc
     let vestingShares = user.vesting_shares;
     let delegatedVestingShares = user.delegated_vesting_shares;
     let receivedVestingShares = user.received_vesting_shares;
-    let steemPower = steem.formatter.vestToSteem(vestingShares, totalVestingShares, totalVestingFundSteem);
-    let delegatedSteemPower = steem.formatter.vestToSteem((receivedVestingShares.split(' ')[0])+' VESTS', totalVestingShares, totalVestingFundSteem);
-    let outgoingSteemPower = steem.formatter.vestToSteem((receivedVestingShares.split(' ')[0]-delegatedVestingShares.split(' ')[0])+' VESTS', totalVestingShares, totalVestingFundSteem) - delegatedSteemPower;
+    let dpayPower = dpay.formatter.vestToDPay(vestingShares, totalVestingShares, totalVestingFundDPay);
+    let delegatedDPayPower = dpay.formatter.vestToDPay((receivedVestingShares.split(' ')[0])+' VESTS', totalVestingShares, totalVestingFundDPay);
+    let outgoingDPayPower = dpay.formatter.vestToDPay((receivedVestingShares.split(' ')[0]-delegatedVestingShares.split(' ')[0])+' VESTS', totalVestingShares, totalVestingFundDPay) - delegatedDPayPower;
 
     // vote power calc
     let lastVoteTime = (new Date - new Date(user.last_vote_time + "Z")) / 1000;
@@ -160,19 +160,19 @@ export function proccessData(accounts){
     if (user.json_metadata === undefined){
       user.json_metadata = { profile_image : ''}
     }
-    profileImage = user.json_metadata.profile_image ? 'https://steemitimages.com/2048x512/' + user.json_metadata.profile_image : '';
+    profileImage = user.json_metadata.profile_image ? 'https://dsiteimages.com/2048x512/' + user.json_metadata.profile_image : '';
 
     accountsData.push({
       name: user.name,
       image: profileImage,
-      rep: steem.formatter.reputation(user.reputation),
-      effectiveSp: parseInt(steemPower  + delegatedSteemPower - -outgoingSteemPower),
-      sp: parseInt(steemPower).toLocaleString(),
-      delegatedSpIn: parseInt(delegatedSteemPower).toLocaleString(),
-      delegatedSpOut: parseInt(-outgoingSteemPower).toLocaleString(),
+      rep: dpay.formatter.reputation(user.reputation),
+      effectiveSp: parseInt(dpayPower  + delegatedDPayPower - -outgoingDPayPower),
+      sp: parseInt(dpayPower).toLocaleString(),
+      delegatedSpIn: parseInt(delegatedDPayPower).toLocaleString(),
+      delegatedSpOut: parseInt(-outgoingDPayPower).toLocaleString(),
       vp: votePower,
-      steem: user.balance.substring(0, user.balance.length - 5),
-      sbd: user.sbd_balance.substring(0, user.sbd_balance.length - 3),
+      dpay: user.balance.substring(0, user.balance.length - 5),
+      bbd: user.bbd_balance.substring(0, user.bbd_balance.length - 3),
       numOfPosts: user.post_count,
       followerCount: '',
       followingCount: '',
@@ -182,7 +182,7 @@ export function proccessData(accounts){
     });
   });
 
-  let followerAndFollowingCount = accountsData.map( user => steem.api.getFollowCountAsync(user.name))
+  let followerAndFollowingCount = accountsData.map( user => dpay.api.getFollowCountAsync(user.name))
 
   Promise.all(followerAndFollowingCount)
     .then(data => {
@@ -193,7 +193,7 @@ export function proccessData(accounts){
     })
 
 
-  let usdValues = accounts.map( user => steem.formatter.estimateAccountValue(user) )
+  let usdValues = accounts.map( user => dpay.formatter.estimateAccountValue(user) )
 
   Promise.all(usdValues)
     .then(data => {
@@ -227,7 +227,7 @@ export function proccessData(accounts){
 
 function getStats(username){
     return new Promise( (resolve,reject) => {
-      steem.api.getState(`/@${username}/`, (err, result) => {
+      dpay.api.getState(`/@${username}/`, (err, result) => {
         let resultsArray = [];
         for ( let post in result.content ){
           console.log(post)
