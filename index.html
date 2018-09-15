@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>Steem Compare - The tool for organising steem user accounts</title>
+        <title>dPay Stats - The tool for organising dPay user accounts</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -14,7 +14,7 @@
 
     <body class="user-compare">
       <nav class="navbar navbar-dark bg-dark">
-         <a class="navbar-brand" href="index.html">STEEM COMPARE</a>
+         <a class="navbar-brand" href="index.html">DPAY STATS</a>
          <nav>
           <a class="nav-item btn btn-secondary active" href="index.html">User compare</a>
           <a class="nav-item btn btn-secondary " href="follower-compare.html">Follower compare</a>
@@ -22,10 +22,10 @@
       </nav>
         <header class="jumbotron">
           <div class="container">
-            <h1>Steem User Compare</h1>
+            <h1>dPay User Compare</h1>
             <div class="form-group">
               <label>enter a list of usernames to compare</label>
-              <input  type="text" placeholder="e.g utopian-io, blocktrades, busy.org" class="form-control search" >
+              <input  type="text" placeholder="e.g initminer, onceuponatime, dsiteapi" class="form-control search" >
             </div>
 
             <div class="searh-buttons">
@@ -42,7 +42,7 @@
         <div class="sort-buttons">
           <span> | Sort Users | </span>
           <a class="btn btn-light btn-sm sort-btn" data-btn-sort="reputation" data-sort="reputation:desc" href="#" role="button">👏 Reputation</a>
-          <a class="btn btn-light btn-sm sort-btn" data-btn-sort="steempower" data-sort="steempower:desc" href="#" role="button">💪 Effective SP</a>
+          <a class="btn btn-light btn-sm sort-btn" data-btn-sort="dpaypower" data-sort="dpaypower:desc" href="#" role="button">💪 Effective BP</a>
           <a class="btn btn-light btn-sm sort-btn" data-btn-sort="value" data-sort="value:desc" href="#" role="button">💵 Account Value</a>
           <a class="btn btn-light btn-sm sort-btn" data-btn-sort="postcount" data-sort="postcount:desc" href="#" role="button">📝 Post Count</a>
           <a class="btn btn-light btn-sm sort-btn" data-btn-sort="followers" data-sort="followers:desc" href="#" role="button">👨‍👩‍👧‍👦 Followers</a>
@@ -56,12 +56,12 @@
         </div>
 
         <hr>
-        <footer>Created by <a href="http://steemit.com/@sambillingham">Sam Billingham</a></footer>
+        <footer>Forked & Developed by <a href="http://dsite.io/@jared">Jared Rice Sr.</a></footer>
       </div> <!-- /container -->
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
-        <script src="https://cdn.steemjs.com/lib/latest/steem.min.js"></script>
+        <script src="https://cdn.dpayjs.com/lib/latest/dpay.min.js"></script>
         <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/FitText.js/1.2.0/jquery.fittext.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/mixitup/3.2.2/mixitup.min.js"></script>
