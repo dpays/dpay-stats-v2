@@ -1,4 +1,4 @@
-import * as steem from './steemActions.js'
+import * as dpay from './dpayActions.js'
 import * as util from './util.js'
 import {mixer} from '../main.js'
 
@@ -6,10 +6,10 @@ export function initUiActions(){
     $(document).ready(() => {
         $('.grid').on('click', '.remove-user', (e) => {
           let user = $(e.currentTarget).parent().data('name');
-          let index = steem.displayedAccounts.findIndex(item => item.name === user.substr(1));
+          let index = dpay.displayedAccounts.findIndex(item => item.name === user.substr(1));
           let target = '.name-'+ (user.substr(1)).replace(/\./g, '-');
 
-          steem.updateDisplayedAccounts('remove', index);
+          dpay.updateDisplayedAccounts('remove', index);
 
           mixer.remove(target)
         });
@@ -17,14 +17,14 @@ export function initUiActions(){
         $('.search-btn').on('click', (e) => {
           let data = $('.search').val();
           let users = data.split(',').map(user => user.trim() );
-          steem.addUsers(users, false)
+          dpay.addUsers(users, false)
         });
 
         $('.clear-btn').on('click', (e) => {
 
           $('.mixitup-control-active').removeClass('mixitup-control-active')
           mixer.remove('.grid-item')
-          steem.updateDisplayedAccounts('update', []);
+          dpay.updateDisplayedAccounts('update', []);
         })
 
         $('.share-btn').on('click', (e) => {
