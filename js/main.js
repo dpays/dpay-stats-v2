@@ -1,9 +1,9 @@
 // import * as util from './modules/util.js'
 import * as ui from './modules/uiActions.js'
-import * as steemActions from './modules/steemActions.js'
+import * as dpayActions from './modules/dpayActions.js'
 
 export let mixer;
-const STEEM_SERVER = 'https://api.steemit.com'
+const DPAY_SERVER = 'wss://dpayd.dpays.io'
 // UI CONTROLS
 ui.initUiActions();
 
@@ -27,8 +27,8 @@ $(document).ready(() => {
 //setups
 if ($('body').hasClass('user-compare')){
   NProgress.start();
-  steemActions.getGlobalProps(STEEM_SERVER)
-    .then(steemActions.checkForUsersAndSearch())
+  dpayActions.getGlobalProps(DPAY_SERVER)
+    .then(dpayActions.checkForUsersAndSearch())
 }
 
 if ($('body').hasClass('follower-compare')){
@@ -45,14 +45,14 @@ function getFollowers(username){
     trickleSpeed: 50,
     minimum: 0.2 });
 
-  steem.api.getFollowers(username, '', 'blog', 1000, function(err, result) {
+  dpay.api.getFollowers(username, '', 'blog', 1000, function(err, result) {
       let followers = result.map( (user) => user.follower )
 
       console.log(followers)
-      steemActions.getGlobalProps(STEEM_SERVER)
+      dpayActions.getGlobalProps(DPAY_SERVER)
         .then( () => {
           NProgress.inc()
-          steemActions.addUsers(followers, true)
+          dpayActions.addUsers(followers, true)
       })
 
   });
